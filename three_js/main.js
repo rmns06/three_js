@@ -1,5 +1,7 @@
 import './style.css'
 import * as THREE from 'three';
+import gsap from 'gsap';
+
 
 document.querySelector('#app').innerHTML = `
   <h1>Hello three js!</h1>
@@ -9,13 +11,13 @@ document.querySelector('#app').innerHTML = `
 const scene = new THREE.Scene();
 
 //object------------------------------------------
-// const geometry = new THREE.BoxGeometry(1, 1, 1);
+const geometry = new THREE.BoxGeometry(1, 1, 1);
 
 //material
-// const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
 //final object (mesh)
-// const mesh = new THREE.Mesh(geometry, material);
+const mesh = new THREE.Mesh(geometry, material);
 //methods to transform object
 
 // mesh.position.z = 0.7;
@@ -37,32 +39,9 @@ const scene = new THREE.Scene();
 // mesh.rotateY(Math.PI * 0.1 );
 
 //add mesh to the scene
-//scene.add(mesh);
+scene.add(mesh);
 
-//groups----------------------------------------
-const group = new THREE.Group()
 
-const cube1 = new THREE.Mesh(
-  new THREE.BoxGeometry(1,1,1),
-  new THREE.MeshBasicMaterial({color: 0xff0000})
-)
-const cube2 = new THREE.Mesh(
-  new THREE.BoxGeometry(1,1,1),
-  new THREE.MeshBasicMaterial({color: 'blue'})
-)
-cube2.position.set(1.5,.3,1)
-
-const cube3 = new THREE.Mesh(
-  new THREE.BoxGeometry(1,1,1),
-  new THREE.MeshBasicMaterial({color: 'green'})
-)
-cube3.position.set(.8,1.2,-1.6)
-
-group.add(cube1, cube2, cube3)
-
-scene.add(group)
-
-group.rotateZ(0.2)
 
 //add gizmo
 const axesHelper = new THREE.AxesHelper(1.5)
@@ -80,7 +59,7 @@ camera.position.x = 1;
 
 scene.add(camera);
 
-camera.lookAt(group.position)
+// camera.lookAt(group.position)
 
 //renderer to draw into canvas api
 const canvas = document.querySelector('.webgl')
@@ -89,4 +68,35 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 
+// renderer.render(scene, camera)
+
+/**
+ * Animate with clock
+ */
+const clock = new THREE.Clock()
+
+const tick = () => {
+
+const elapsedTime = clock.getElapsedTime()
+
+mesh.position.x = Math.cos(elapsedTime)
+// camera.lookAt(mesh.position)
+
 renderer.render(scene, camera)
+
+requestAnimationFrame(tick)
+}
+tick()
+/**
+ * Animate with gsap
+ */
+
+// gsap.to(mesh.position, {duration: 3, delay: 1, x: 2})
+// gsap.to(mesh.position, {duration: 3, delay: 4, x: 0})
+
+// const tick = () => {
+//   renderer.render(scene, camera)
+//   requestAnimationFrame(tick)
+  
+// }
+// tick()
