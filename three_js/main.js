@@ -6,7 +6,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 document.querySelector('#app').innerHTML = `
   <h1>Hello three js!</h1>
-  <h2>Part 1</h2>
+  <h2>Part 7</h2>
+  <p>Add camera controls (drag & drop) </p>
   `
 const canvas = document.querySelector('.webgl')
 const sizes ={
