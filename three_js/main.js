@@ -78,9 +78,8 @@ const clock = new THREE.Clock()
 const tick = () => {
 
 const elapsedTime = clock.getElapsedTime()
-
-mesh.position.x = Math.cos(elapsedTime)
-// camera.lookAt(mesh.position)
+mesh.rotation.y =  elapsedTime
+camera.lookAt(mesh.position)
 
 renderer.render(scene, camera)
 
