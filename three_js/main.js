@@ -2,14 +2,15 @@ import './style.css'
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
+import * as dat from 'lil-gui';
 
 document.querySelector('#app').innerHTML = `
   <h1>Hello three js!</h1>
-  <h2>Part 8</h2>
-  <p>Add fullscreen canva (on dblclick) and resizing </p>
+  <h2>Part 9</h2>
+  <p>Debug UI press "h" to see it</p>
   `
 const canvas = document.querySelector('.webgl')
+
 const sizes ={
   width: window.innerWidth,
   height: window.innerHeight
@@ -169,3 +170,49 @@ tick()
   
 // }
 // tick()
+
+/**
+ * Debug UI
+ */
+const gui = new dat.GUI()
+gui.hide()
+const debugObject = {
+   color: 0x66C3FF,
+   spin: () => {
+     gsap.to(mesh.rotation, { duration:1, y: mesh.rotation.y + 5})
+   }
+ }
+//activate panel with shortcut
+ window.addEventListener('keydown', e => {
+   if(e.key === 'h'){
+     gui._hidden ? gui.show() : gui.hide()
+   }
+ })
+
+ gui
+ .add(mesh, 'visible')
+gui
+  .add(mesh.position, 'y')
+  .min(-3)
+  .max(3)
+  .step(0.01)
+  .name('elevation')
+gui
+  .add(mesh.position, 'x')
+  .min(-3)
+  .max(3)
+  .step(0.01)
+  .name('translation')
+  
+gui .add(material, 'wireframe')
+//change color
+// gui
+//   .addColor(debugObject, 'color')
+//   .onChange(()=> {
+//     material.color.set(debugObject.color)
+//   })
+//or more simple
+gui.addColor(material, 'color')
+
+//add fnction
+gui.add(debugObject, 'spin')
