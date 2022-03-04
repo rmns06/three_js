@@ -3,11 +3,13 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+const chapitreNumber = 9
+const chapitreName = 'Geometry'
 
 document.querySelector('#app').innerHTML = `
   <h1>Hello three js!</h1>
-  <h2>Part 8</h2>
-  <p>Add fullscreen canva (on dblclick) and resizing </p>
+  <h2>Part ${ chapitreNumber }</h2>
+  <p>${ chapitreName }</p>
   `
 const canvas = document.querySelector('.webgl')
 const sizes ={
@@ -30,10 +32,29 @@ window.addEventListener('mousemove', (e) => {
 const scene = new THREE.Scene();
 
 //object------------------------------------------
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+// const geometry = new THREE.BoxGeometry(1, 1, 1);
+const geometry = new THREE.BufferGeometry()
 
+// const positionsArray = new Float32Array([
+//   0, 0, 0,
+//   0, 1, 0,
+//   1, 0, 0
+// ])
+
+const count = 250
+const positionsArray = new Float32Array(count * 3 * 3)
+
+for(let i=0; i< count *3 *3; i++){
+  positionsArray[i]= (Math.random() - 0.5) * 4
+}
+const positionAttribute = new THREE.BufferAttribute(positionsArray, 3)
+
+geometry.setAttribute('position', positionAttribute)
 //material
-const material = new THREE.MeshBasicMaterial({ color: 0x66C3FF });
+const material = new THREE.MeshBasicMaterial({ 
+  color: 0x66C3FF,
+  wireframe: true
+});
 
 //final object (mesh)
 const mesh = new THREE.Mesh(geometry, material);
