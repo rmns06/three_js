@@ -6,13 +6,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 document.querySelector('#app').innerHTML = `
   <h1>Hello three js!</h1>
-  <h2>Part 7</h2>
-  <p>Add camera controls (drag & drop) </p>
+  <h2>Part 8</h2>
+  <p>Add fullscreen canva (on dblclick) and resizing </p>
   `
 const canvas = document.querySelector('.webgl')
 const sizes ={
-  width: 800,
-  height: 600
+  width: window.innerWidth,
+  height: window.innerHeight
 }
 
 /**
@@ -60,10 +60,32 @@ const mesh = new THREE.Mesh(geometry, material);
 //add mesh to the scene
 scene.add(mesh);
 
-
 //add gizmo
 const axesHelper = new THREE.AxesHelper(1.5)
 scene.add(axesHelper)
+
+/**
+ * Sizes of canva
+ */
+window.addEventListener('resize', () => {
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  //Update camera aspect ratio
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  //update renderer and limit renderer
+  renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
+/**
+ * FullScreen parts
+ */
+window.addEventListener('dblclick', () => {
+  !document.fullscreenElement ? canvas.requestFullscreen(): document.exitFullscreen()
+})
 
 /** 
  *camera
@@ -89,12 +111,15 @@ scene.add(camera);
 //add damping for smooth controls
 controls.enableDamping = true
 
-
-//renderer to draw into canvas api
+/**
+ * renderer to draw into canvas api
+ */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height)
+// set limit of pixel ratio for limit the rerender
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // renderer.render(scene, camera)
 
